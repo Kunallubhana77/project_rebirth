@@ -309,7 +309,7 @@ const ProjectRebirth = () => {
             </AnimatePresence>
           </div>
           
-          <LazyVideo className="hero-video" src={landingClip} style={fullscreenVideoStyle} />
+          <LazyVideo className="hero-video" src={landingClip} muted={true} style={fullscreenVideoStyle} />
           <div className="grid-overlay" />
           <div className="planetary-map"><div className="map-grid"><div className="map-pulse" style={{ top: '20%', left: '30%' }} /><div style={{ position: 'absolute', top: '15%', left: '35%', fontSize: '0.4rem', color: 'var(--mars-red)', fontWeight: 900 }}>SECTOR_UNKNOWN</div><div className="map-pulse" style={{ top: '40%', left: '25%', animationDelay: '0.5s' }} /><div style={{ position: 'absolute', top: '45%', left: '30%', fontSize: '0.4rem', color: 'var(--mars-red)', fontWeight: 900 }}>VOID_MARKER</div><div className="map-pulse" style={{ top: '60%', left: '70%', animationDelay: '1s' }} /></div></div>
           <div className="side-hud-panel"><div style={{ fontSize: '0.6rem', color: 'var(--mars-red)', marginBottom: '10px' }}>LIFE_SUPPORT_SYSTEM</div><div className="stat-label">O2_LEVEL</div><div className="hud-bar"><div className="hud-bar-fill" style={{ animationDelay: '0s' }} /></div><div className="stat-label" style={{ marginTop: '10px' }}>CORE_TEMP</div><div className="hud-bar"><div className="hud-bar-fill" style={{ animationDelay: '-1.5s' }} /></div></div>
@@ -398,7 +398,7 @@ const ProjectRebirth = () => {
         {/* Story Mission Sections */}
         {storyScenes.map((scene, idx) => (
           <section key={idx} style={{ ...fullscreenSectionStyle, scrollSnapAlign: 'start' }}>
-            <LazyVideo className="hero-video" src={scene.video} style={fullscreenVideoStyle} />
+            <LazyVideo className="hero-video" src={scene.video} muted={true} style={fullscreenVideoStyle} />
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
               <motion.div 
                 initial={{ opacity: 0 }}
