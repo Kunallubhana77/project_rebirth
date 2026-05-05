@@ -31,7 +31,7 @@ const fullscreenVideoStyle = {
   opacity: 1
 };
 
-const LazyVideo = ({ src, style, className }) => {
+const LazyVideo = ({ src, style, className, muted = true }) => {
   const videoRef = useRef(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -65,7 +65,7 @@ const LazyVideo = ({ src, style, className }) => {
       ref={videoRef}
       className={className}
       autoPlay
-      muted
+      muted={muted}
       loop
       playsInline
       preload="auto"
@@ -93,7 +93,6 @@ const ProjectRebirth = () => {
   const isOverLimit = message.length > charLimit;
   
   const audioRef = useRef(null);
-  const videoRef = useRef(null);
   const alienAudioRef = useRef(null);
   const scrollContainerRef = useRef(null);
   const [, setLogs] = useState([]);
@@ -114,10 +113,6 @@ const ProjectRebirth = () => {
 
   const startTerminal = () => {
     setHasStarted(true);
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.play();
-    }
   };
 
   const enterHome = () => {
@@ -245,7 +240,7 @@ const ProjectRebirth = () => {
                   </button>
                 </div>
                 <div className="video-side" style={{ flex: 1.8, position: 'relative', border: '1px solid rgba(255,102,0,0.5)', background: '#000', overflow: 'hidden' }}>
-                  <LazyVideo src={invasionClip} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                  <LazyVideo src={invasionClip} muted={false} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
                   <div className="target-reticle" />
                   <div className="scanline" style={{ opacity: 0.4 }} />
                 </div>
