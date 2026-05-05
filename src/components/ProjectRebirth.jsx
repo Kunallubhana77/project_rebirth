@@ -4,9 +4,10 @@ import MarsCanvas from './MarsCanvas';
 import Typewriter from './Typewriter';
 
 const ambientSound = '/assets/Z.mp3';
-const firstClip = '/assets/first.mp4';
-const invasionClip = '/assets/day.mp4';
-const secClip = '/assets/sec.mp4';
+const firstClip = 'https://res.cloudinary.com/dljrnb9ef/video/upload/v1778000614/first_mxaena.mp4';
+const invasionClip = 'https://res.cloudinary.com/dljrnb9ef/video/upload/v1778000584/day_jwprlf.mp4';
+const secClip = 'https://res.cloudinary.com/dljrnb9ef/video/upload/v1778000566/sec_ojc3cq.mp4';
+const landingClip = 'https://res.cloudinary.com/dljrnb9ef/video/upload/v1778000612/3_nqhg8i.mp4';
 const alienVoice = '/assets/Alien.mp3';
 
 const fullscreenSectionStyle = {
@@ -28,6 +29,50 @@ const fullscreenVideoStyle = {
   transform: 'scale(1.8)',
   zIndex: 0,
   opacity: 1
+};
+
+const LazyVideo = ({ src, style, className }) => {
+  const videoRef = useRef(null);
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isInView) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isInView]);
+
+  return (
+    <video
+      ref={videoRef}
+      className={className}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      style={style}
+      src={src}
+    />
+  );
 };
 
 const ProjectRebirth = () => {
@@ -133,7 +178,7 @@ const ProjectRebirth = () => {
     { 
       title: "FINAL ESCAPE", 
       text: "With 'The Swarm' at our heels, we breached the exosphere. The last look at a blue marble turning gray. Our infinite search for a new home begins.", 
-      video: "/assets/3.mp4" 
+      video: landingClip 
     }
   ];
 
@@ -200,7 +245,7 @@ const ProjectRebirth = () => {
                   </button>
                 </div>
                 <div className="video-side" style={{ flex: 1.8, position: 'relative', border: '1px solid rgba(255,102,0,0.5)', background: '#000', overflow: 'hidden' }}>
-                  <video ref={videoRef} src={invasionClip} autoPlay loop style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
+                  <LazyVideo src={invasionClip} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.9 }} />
                   <div className="target-reticle" />
                   <div className="scanline" style={{ opacity: 0.4 }} />
                 </div>
@@ -269,7 +314,7 @@ const ProjectRebirth = () => {
             </AnimatePresence>
           </div>
           
-          <video ref={videoRef} className="hero-video" autoPlay muted loop playsInline style={fullscreenVideoStyle} src="/assets/3.mp4" />
+          <LazyVideo className="hero-video" src={landingClip} style={fullscreenVideoStyle} />
           <div className="grid-overlay" />
           <div className="planetary-map"><div className="map-grid"><div className="map-pulse" style={{ top: '20%', left: '30%' }} /><div style={{ position: 'absolute', top: '15%', left: '35%', fontSize: '0.4rem', color: 'var(--mars-red)', fontWeight: 900 }}>SECTOR_UNKNOWN</div><div className="map-pulse" style={{ top: '40%', left: '25%', animationDelay: '0.5s' }} /><div style={{ position: 'absolute', top: '45%', left: '30%', fontSize: '0.4rem', color: 'var(--mars-red)', fontWeight: 900 }}>VOID_MARKER</div><div className="map-pulse" style={{ top: '60%', left: '70%', animationDelay: '1s' }} /></div></div>
           <div className="side-hud-panel"><div style={{ fontSize: '0.6rem', color: 'var(--mars-red)', marginBottom: '10px' }}>LIFE_SUPPORT_SYSTEM</div><div className="stat-label">O2_LEVEL</div><div className="hud-bar"><div className="hud-bar-fill" style={{ animationDelay: '0s' }} /></div><div className="stat-label" style={{ marginTop: '10px' }}>CORE_TEMP</div><div className="hud-bar"><div className="hud-bar-fill" style={{ animationDelay: '-1.5s' }} /></div></div>
@@ -358,7 +403,7 @@ const ProjectRebirth = () => {
         {/* Story Mission Sections */}
         {storyScenes.map((scene, idx) => (
           <section key={idx} style={{ ...fullscreenSectionStyle, scrollSnapAlign: 'start' }}>
-            <video className="hero-video" autoPlay muted loop playsInline src={scene.video} style={fullscreenVideoStyle} />
+            <LazyVideo className="hero-video" src={scene.video} style={fullscreenVideoStyle} />
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10 }}>
               <motion.div 
                 initial={{ opacity: 0 }}
